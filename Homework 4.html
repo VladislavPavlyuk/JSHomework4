@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .digit{
+            
+            display:block;
+            padding: 0px;
+            margin: 10px;
+            margin-top: 150px;
+            width:90px ;
+            height:135px ; 
+            float:left;
+        }
+    </style>
+  
+</head>
+<body>
+
+    <div class="digit"; style="margin-left: 300px;">
+        <img src="clock/blank.gif" id="h1" />           
+    </div>
+    <div class="digit">
+        <img src="clock/blank.gif" id="h2" />     
+    </div>
+    <div class="digit">
+        <img src="clock/points.gif" id="points1"/>     
+    </div>
+    <div class="digit">
+        <img src="clock/blank.gif" id="m1" />     
+    </div>
+    <div class="digit">
+        <img src="clock/blank.gif" id="m2" />     
+    </div>
+    <div class="digit">
+        <img src="clock/points.gif" id="points2"/>     
+    </div>
+    <div class="digit">
+        <img src="clock/blank.gif" id="s1" />     
+    </div>
+    <div class="digit">
+        <img src="clock/blank.gif" id="s2" />     
+    </div>    
+
+    <script>
+        let img = new Array("clock/0.gif","clock/1.gif","clock/2.gif","clock/3.gif","clock/4.gif","clock/5.gif","clock/6.gif","clock/7.gif","clock/8.gif","clock/9.gif");
+        let points = new Array("clock/blank.gif","clock/points.gif");
+        let p = true;
+
+        function imgswitch(index,action)
+        {
+            switch(action)
+            {
+                case 1: {
+                    document.images["h1"].src=img[index];
+                    break;
+                }
+                case 2: {
+                    document.images["h2"].src=img[index];
+                    break;
+                }
+                case 3: {
+                    document.images["m1"].src=img[index];
+                    break;
+                }
+                case 4: {
+                    document.images["m2"].src=img[index];
+                    break;
+                }
+                case 5: {
+                    document.images["s1"].src=img[index];
+                    break;
+                }
+                case 6: {
+                    document.images["s2"].src=img[index];
+                    break;
+                }
+            }
+        }
+
+        function switchPoints()
+        {
+            if (p == true)
+                    {
+                        document.images["points1"].src=points[0];
+                        document.images["points2"].src=points[0];
+                        p = false;
+                    } else {
+                        document.images["points1"].src=points[1];
+                        document.images["points2"].src=points[1];
+                        p = true;
+                    }
+        }
+        
+        function zero()
+        {
+            for (action=6; 0<=action; action--)
+            imgswitch(index,action); 
+        }
+
+
+        function clockSet()
+        {
+            var currentTime = new Date(); 
+            hour = prompt("Please set hour",currentTime.getHours());
+            minute = prompt("Please set minute",currentTime.getMinutes());
+            second = prompt("Please set second",currentTime.getSeconds());
+
+            interval= parseInt(prompt("Please enter Interval", 1000));
+
+            h1 = parseInt(hour.charAt(0));            
+            h2 = parseInt(hour.charAt(1));
+            if (h2==null) 
+                {h2=h1;
+                h1=0;}
+            if ((h2<0)||(h2>9)) h2=0;
+            if ((h1<0)||(h1>1)) h1=0;   
+
+            if (h1==1) flag=1;
+                else flag=9;
+
+            m1 = parseInt(minute.charAt(0));
+            m2 = parseInt(minute.charAt(1));
+            if (m2==null) 
+                {m2=m1;
+                m1=0;}
+
+            if ((m1<0)||(m1>5)) m1=0;
+            if ((m2<0)||(m2>9)) m2=0; 
+
+            s1 = parseInt(second.charAt(0));
+            s2 = parseInt(second.charAt(1));
+            if (s2==null) 
+                {s2=s1;
+                s1=0;}
+        }         
+
+        function nextImage()
+        {
+            if (s2 < 9)
+                 s2++;
+            else
+                {
+                    s2 = 0;
+                    if (s1 < 5){
+                        s1++;
+                        display(h1,h2,m1,m2,s1,s2);
+                    } else 
+                        {                            
+                            s1=0;
+                            if (m2 < 9){                         
+                            m2++;
+                            display(h1,h2,m1,m2,s1,s2)
+                        } else 
+                            {                                                  
+                                m2=s1=0;
+                                if (m1 < 5){    
+                                m1++;
+                                display(h1,h2,m1,m2,s1,s2)
+                                }  
+                                else{
+                                    m1 = m2 = s1 = 0;
+                                    if (h2 < flag){
+                                        h2++;
+                                        display(h1,h2,m1,m2,s1,s2)                                       
+                                    }
+                                    else{
+                                        flag=1;
+                                        h2 = m1 = m2 = s1 = 0;
+                                        if (h1 < 1){
+                                        h1++;
+                                        display(h1,h2,m1,m2,s1,s2)
+                                        }
+                                        else{
+                                            h1 = h2 = m1 = m2 = s1 = 0;
+                                            zero();
+                                            flag = 9;
+                                        }
+                                    }
+                                }                          
+                            }                        
+                    }
+                }
+                 
+            //imgswitch(index,6);
+            display(h1,h2,m1,m2,s1,s2);
+        }
+         
+        function display(h1,h2,m1,m2,s1,s2)
+        {
+            switchPoints();
+            imgswitch(h1,1);            
+            imgswitch(h2,2);
+            imgswitch(m1,3);
+            imgswitch(m2,4);
+            imgswitch(s1,5);  
+            imgswitch(s2,6);  
+        }
+        
+        let h1 = h2 = m1 = m2 = s1 = index = flag = 0; 
+
+        interval = 1000;
+   
+        clockSet();
+        
+        display(h1,h2,m1,m2,s1,s2);
+
+        setInterval("nextImage()", interval);
+
+    </script>
+</body>
+</html>
